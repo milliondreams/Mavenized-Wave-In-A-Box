@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>wiab</artifactId>
+        <groupId>org.waveprotocol.box</groupId>
+        <version>0.3-SNAPSHOT</version>
+    </parent>
+    <groupId>org.waveprotocol.box</groupId>
+    <artifactId>proto</artifactId>
+    <version>0.3-SNAPSHOT</version>
+    <name>proto</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <build>
+        <sourceDirectory>${project.build.directory}/generated-sources</sourceDirectory>        
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="src.dir" value="${basedir}/src/main/proto"/>
+                                <property name="gen.dir" value="${project.build.directory}/generated-sources"/>
+                                <property name="protoc" value="protoc" />
+                                <property name="protoc_dist" value="/usr/include" />
+                                <!-- Macros. -->
+                                <macrodef name="protoc" description="Runs the protobuf compiler">
+                                    <attribute name="proto" description="The protobuf source"/>
+                                    <sequential>
+                                        <exec executable="${protoc}">
+                                            <arg value="--proto_path=${src.dir}" />
+                                            <arg value="--proto_path=${protoc_dist}" />
+                                            <arg value="--java_out=${gen.dir}" />
+                                            <arg value="@{proto}" />
+                                        </exec>
+                                    </sequential>
+                                </macrodef>
+                                <mkdir dir="${gen.dir}" />
+                                <protoc proto="${src.dir}/org/waveprotocol/box/common/comms/waveclient-rpc.proto" />
+                                <protoc proto="${src.dir}/org/waveprotocol/box/search/search.proto"/>
+                                <protoc proto="${src.dir}/org/waveprotocol/box/server/persistence/protos/account-store.proto" />
+                                <protoc proto="${src.dir}/org/waveprotocol/box/server/persistence/protos/delta-store.proto" />
+                                <protoc proto="${src.dir}/org/waveprotocol/box/server/rpc/rpc.proto" />
+                                <protoc proto="${src.dir}/org/waveprotocol/wave/concurrencycontrol/clientserver.proto" />
+                                <protoc proto="${src.dir}/org/waveprotocol/wave/federation/federation.protodevel"/>
+                                <protoc proto="${src.dir}/org/waveprotocol/wave/federation/federation_error.protodevel" />
+                                <protoc proto="${src.dir}/org/waveprotocol/protobuf/extensions.proto" />
+                            </tasks>
+                            <sourceRoot>${gen.dir}</sourceRoot>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>  
+    <dependencies>
+    </dependencies>
+</project>
