@@ -1,0 +1,9 @@
+This is a set of maven projects using the wave in a box code reorganized in maven projects structure to build same targets as built by ant dist in WIAB codebase.
+
+Tasks remaining -
+1. Add the .st compilation task to proto-stringtemplate project
+2. Add GXP compilation task wherever required.
+3. Create the final wave-in-a-box project to put together all the jars.
+
+Note there are currently some errors in the box project which should be solved once we have 1 & 2 accomplished.
+
